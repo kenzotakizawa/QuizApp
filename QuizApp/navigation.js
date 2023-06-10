@@ -1,30 +1,28 @@
 let currentQuizIndex = 0;
+let correctAnswers = 0;
 
-// createQuizChallengeView関数はクイズ挑戦画面を生成します。
 function createQuizChallengeView() {
-  // アプリケーションのメインコンテナを取得します。
   const appContainer = document.getElementById('app');
-
-  // メインコンテナの内容をクリアします。
   appContainer.innerHTML = '';
-
-  // ローカルストレージからクイズデータを取得します。
   const quizzes = JSON.parse(localStorage.getItem('quizzes'));
 
-  // クイズがない場合、ホームボタンを表示して終了します。
   if (currentQuizIndex >= quizzes.length) {
     appContainer.innerHTML = `
-      <h2>すべてのクイズが出されました</h2>
-      <button id="home-button">ホーム</button>
+      <h2>Your score: ${correctAnswers} out of ${quizzes.length} questions!</h2>
+      <button id="home-button">Home</button>
     `;
     document.getElementById('home-button').addEventListener('click', function() {
       createHomeView();
       addHomeViewListeners();
+      // ホーム画面に戻った際にインデックスと正解数をリセットします
+      currentQuizIndex = 0;
+      correctAnswers = 0;
     });
     return;
   }
-  
+
   const quiz = quizzes[currentQuizIndex];
+
   
   // クイズ挑戦ビューのHTMLを作成します。
   const challengeHTML = `
